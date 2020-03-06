@@ -14,9 +14,7 @@ object ApkManifestFetcher {
             while (true) {
                 val entry = zipInputStream.nextEntry ?: break
                 if (entry.name == "AndroidManifest.xml") {
-//                    zip.getInputStream(entry).use { input ->
                     return decompressXML(zipInputStream.readBytes())
-//                    }
                 }
             }
         }
