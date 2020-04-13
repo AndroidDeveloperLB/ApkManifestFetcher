@@ -1,5 +1,6 @@
 package com.lb.apkmanifestfetcher
 
+import com.lb.apkparser.library.XmlTag
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.File

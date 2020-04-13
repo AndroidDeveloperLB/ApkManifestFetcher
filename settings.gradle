@@ -1,2 +1,3 @@
+include ':apkParserLibrary'
 include ':app'
 rootProject.name = "ApkManifestFetcher"

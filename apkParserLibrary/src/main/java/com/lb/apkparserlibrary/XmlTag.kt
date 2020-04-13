@@ -1,8 +1,9 @@
-package com.lb.apkmanifestfetcher
+package com.lb.apkparser.library
 
 import android.content.Context
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
+import java.io.StringReader
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -15,6 +16,7 @@ class XmlTag(val tagName: String) {
     /** a hashmap of all of the tag attributes. example: <a c="d" e="f">b</a> . attributes: {{"c"="d"},{"e"="f"}}     */
     @JvmField
     var tagAttributes: HashMap<String, String>? = null
+
     /**list of inner text and xml tags*/
     @JvmField
     var innerTagsAndContent: ArrayList<Any>? = null
@@ -24,11 +26,9 @@ class XmlTag(val tagName: String) {
         fun getXmlFromString(input: String): XmlTag? {
             val factory = XmlPullParserFactory.newInstance()
             factory.isNamespaceAware = true
-            val parser = factory.newPullParser()
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
-            parser.setInput(input.byteInputStream(), null)
-//            xpp.setInput(StringReader(input))
-            return getXmlRootTagOfXmlPullParser(parser)
+            val xpp = factory.newPullParser()
+            xpp.setInput(StringReader(input))
+            return getXmlRootTagOfXmlPullParser(xpp)
         }
 
         @JvmStatic
@@ -107,7 +107,8 @@ class XmlTag(val tagName: String) {
         if (numberOfAttributes != 0)
             for ((key, value) in tagAttributes!!)
                 sb.append(" ").append(key).append("=\"").append(value).append("\"")
-        val numberOfInnerContent = if (innerTagsAndContent != null) innerTagsAndContent!!.size else 0
+        val numberOfInnerContent =
+            if (innerTagsAndContent != null) innerTagsAndContent!!.size else 0
         if (numberOfInnerContent == 0)
             sb.append("/>")
         else {
